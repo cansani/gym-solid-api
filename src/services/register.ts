@@ -22,10 +22,14 @@ export class RegisterService {
             throw new UserAlreadyExistsError()
         }
 
-        await this.usersRepository.register({
+        const user = await this.usersRepository.register({
             name,
             email,
             password_hash: passwordHashed
         })
+
+        return {
+            user
+        }
     }
 }
