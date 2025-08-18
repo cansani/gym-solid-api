@@ -3,19 +3,25 @@ import { AuthenticateService } from "./authenticate"
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository"
 import { hash } from "bcryptjs"
 import { InvalidCredentialsError } from "./errors/invalid-credentials-err"
+import { beforeEach } from "node:test"
+
+let usersRepository: InMemoryUsersRepository
+let sut: AuthenticateService
 
 describe("Authenticate Service", () => {
-    it("Should be able to authenticate", async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const authenticateService = new AuthenticateService(usersRepository)
+    beforeEach(() => {
+        usersRepository = new InMemoryUsersRepository()
+        sut = new AuthenticateService(usersRepository)
+    })
 
+    it("Should be able to authenticate", async () => {
         await usersRepository.register({
             name: "John",
             email: "john@email.com",
             password_hash: await hash("123456", 6)
         })
 
-        const { access_token } = await authenticateService.handle({
+        const { access_token } = await sut.handle({
             email: "john@email.com",
             password: "123456"
         })
@@ -24,11 +30,8 @@ describe("Authenticate Service", () => {
     })
 
     it("Should not be able to authenticate using invalid email", async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const authenticateService = new AuthenticateService(usersRepository)
-
         await expect(async () => {
-            await authenticateService.handle({
+            await sut.handle({
                 email: "john123@email.com",
                 password: "123456"
             })
@@ -36,9 +39,6 @@ describe("Authenticate Service", () => {
     })
 
     it("Should not be able to authenticate using wrong password", async () => {
-        const usersRepository = new InMemoryUsersRepository()
-        const sut = new AuthenticateService(usersRepository)
-
         await usersRepository.register({
             name: "John",
             email: "john@email.com",
