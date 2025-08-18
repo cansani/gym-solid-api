@@ -3,7 +3,7 @@ import { AuthenticateService } from "./authenticate"
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository"
 import { hash } from "bcryptjs"
 import { InvalidCredentialsError } from "./errors/invalid-credentials-err"
-import { beforeEach } from "node:test"
+import { beforeEach } from "vitest"
 
 let usersRepository: InMemoryUsersRepository
 let sut: AuthenticateService
