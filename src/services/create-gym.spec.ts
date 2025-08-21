@@ -17,7 +17,7 @@ describe("Create Gym Service", async () => {
             description: "",
             phone: "",
             latitude:-22.739692,
-            longitude: 47.660755
+            longitude: -47.660755
         })
 
         expect(gym.id).toEqual(expect.any(String))
