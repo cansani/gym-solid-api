@@ -1,6 +1,7 @@
 import { UsersRepository } from "@/repositories/users-repository"
 import { compare } from "bcryptjs"
 import { InvalidCredentialsError } from "./errors/invalid-credentials-err"
+import { User } from "generated/prisma"
 
 interface AuthenticateRequest {
     email: string,
@@ -8,7 +9,7 @@ interface AuthenticateRequest {
 }
 
 interface AuthenticateResponse {
-    access_token: string
+    user: User
 }
 
 export class AuthenticateService {
@@ -30,7 +31,7 @@ export class AuthenticateService {
         }
 
         return {
-            access_token: ""
+            user
         }
     }
 }   
