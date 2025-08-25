@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "test": "vitest"
+    "test": "vitest run --project unit",
+    "test:e2e": "vitest run --project e2e"
   },
   "keywords": [],
   "author": "",

@@ -21,12 +21,12 @@ describe("Authenticate Service", () => {
             password_hash: await hash("123456", 6)
         })
 
-        const { access_token } = await sut.handle({
+        const { user } = await sut.handle({
             email: "john@email.com",
             password: "123456"
         })
 
-        expect(access_token).toStrictEqual(expect.any(String))
+        expect(user.id).toStrictEqual(expect.any(String))
     })
 
     it("Should not be able to authenticate using invalid email", async () => {
