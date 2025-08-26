@@ -5,5 +5,5 @@ export function makeCreateGymService() {
     const gymsRepository = new PrismaGymsRepository()
     const createGymsService = new createGymService(gymsRepository)
 
-    return createGymService
+    return createGymsService
 }
