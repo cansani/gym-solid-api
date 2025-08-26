@@ -1,23 +1,28 @@
 import { app } from "@/app";
-import { describe, beforeEach, afterEach, it } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
+import { createAndAuthenticateUser } from "@/utils/tests/create-and-authenticate-user";
 
-describe("Create Gym (e2e)", async () => {
-    beforeEach(async () => {
+describe("Create Gym (e2e)", () => {
+    beforeAll(async () => {
         await app.ready()
     })
 
-    afterEach(async () => {
+    afterAll(async () => {
         await app.close()
     })
 
-    it("should be able to create gym", async () => {
-        const response = await request(app.server).post("/gym").send({
+    it("should be able to create a gym", async () => {
+        const { access_token } = await createAndAuthenticateUser(app)
+
+        const response = await request(app.server).post("/gyms").set("Authorization", `Bearer ${access_token}`).send({
             name: "Gym 01",
-            description: "Random description",
+            description: "Some description",
             phone: "11999999999",
-            latitude: "000000",
-            longitude: "0000000"
+            latitude:-22.739692,
+            longitude: -47.660755
         })
+
+        expect(response.statusCode).toEqual(201)
     })
 })

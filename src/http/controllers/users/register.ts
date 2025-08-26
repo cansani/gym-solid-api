@@ -26,5 +26,5 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
         throw err
     }
 
-    reply.status(201)
+    reply.status(201).send()
 }

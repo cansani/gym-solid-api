@@ -27,5 +27,5 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
         longitude
     })
 
-    return reply.status(201)
+    return reply.status(201).send()
 }

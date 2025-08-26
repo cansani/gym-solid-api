@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import request from "supertest"
 import { app } from "@/app";
 import { afterEach } from "node:test";
+import { createAndAuthenticateUser } from "@/utils/tests/create-and-authenticate-user";
 
 describe("Get Profile (e2e)", async () => {
     beforeEach(async () => {
@@ -13,20 +14,9 @@ describe("Get Profile (e2e)", async () => {
     })
 
     it("should be able to get profile", async () => {
-        await request(app.server).post("/users").send({
-            name: "John",
-            email: "john@email.com",
-            password: "123456"
-        })
+        const { access_token } = await createAndAuthenticateUser(app)
 
-        const authenticateResponse = await request(app.server).post("/sessions").send({
-            email: "john@email.com",
-            password: "123456"
-        })
-
-        const jwtToken = authenticateResponse.body.access_token
-
-        const response = await request(app.server).get("/me").set('Authorization', `Bearer ${jwtToken}`)
+        const response = await request(app.server).get("/me").set('Authorization', `Bearer ${access_token}`)
 
         expect(response.statusCode).toEqual(200)
         expect(response.body.user).toEqual(expect.objectContaining({
