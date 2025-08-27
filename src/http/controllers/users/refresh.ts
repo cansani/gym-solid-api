@@ -12,14 +12,18 @@ export async function refresh(request: FastifyRequest, reply: FastifyReply) {
     const userId = request.user.sub
 
     const accessToken = await reply.jwtSign(
-        {},
+        {
+            role: request.user.role
+        },
         {
             sub: userId
         }
     )
 
     const refreshToken = await reply.jwtSign(
-        {},
+        {
+            role: request.user.role
+        },
         {
             sub: userId,
             expiresIn: '7d'

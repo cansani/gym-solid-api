@@ -14,7 +14,7 @@ describe("Check-in History (e2e)", () => {
     })
 
     it("should be able to list the check ins history", async () => {
-        const { access_token } = await createAndAuthenticateUser(app)
+        const { access_token } = await createAndAuthenticateUser(app, true)
 
         const gym = await prisma.gym.create({
             data: {

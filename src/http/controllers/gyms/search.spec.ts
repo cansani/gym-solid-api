@@ -13,7 +13,7 @@ describe("Search Gym (e2e)", () => {
     })
 
     it("should be able to search gyms by query", async () => {
-        const { access_token } = await createAndAuthenticateUser(app)
+        const { access_token } = await createAndAuthenticateUser(app, true)
 
         await request(app.server).post("/gyms").set("Authorization", `Bearer ${access_token}`).send({
             name: "Gym 01",

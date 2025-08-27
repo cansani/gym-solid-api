@@ -20,14 +20,18 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
         })
 
         const accessToken = await reply.jwtSign(
-            {},
             {
-                sub: user.id
+                role: user.role
+            },
+            {
+                sub: user.id,
             }
         )
 
         const refreshToken = await reply.jwtSign(
-            {},
+            {
+                role: user.role
+            },
             {
                 sub: user.id,
                 expiresIn: '7d'
