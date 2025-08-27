@@ -13,7 +13,7 @@ export async function history(request: FastifyRequest, reply: FastifyReply) {
 
     const userId = request.user.sub
 
-    const checkIns = await fetchUserCheckInsHistory.handle({
+    const { checkIns } = await fetchUserCheckInsHistory.handle({
         userId,
         page
     })
