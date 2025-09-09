@@ -18,6 +18,10 @@ export async function search(request: FastifyRequest, reply: FastifyReply) {
     })
 
     return reply.status(200).send({
-        gyms
+        gyms: gyms.map(item => ({
+            ...item,
+            latitude: Number(item.latitude),
+            longitude: Number(item.longitude)
+        }))
     })
 }

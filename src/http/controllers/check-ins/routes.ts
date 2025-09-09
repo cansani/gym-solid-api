@@ -16,19 +16,18 @@ export async function checkInsRoutes(app: FastifyTypedInstance) {
             querystring: z.object({
                 page: z.coerce.number().min(1).default(1)
             }),
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
-            }),
             response: {
-                200: z.array(
-                    z.object({
-                        id: z.uuid(),
-                        created_at: z.date(),
-                        validated_at: z.date().optional(),
-                        user_id: z.uuid(),
-                        gym_id: z.uuid(),
-                    })
-                )
+                200: z.object({
+                    checkIns: z.array(
+                        z.object({
+                            id: z.uuid(),
+                            created_at: z.date(),
+                            validated_at: z.date().nullable(),
+                            user_id: z.uuid(),
+                            gym_id: z.uuid(),
+                        })
+                    )
+                })
             }
         }
     }, history)
@@ -37,9 +36,6 @@ export async function checkInsRoutes(app: FastifyTypedInstance) {
         schema: {
             tags: ["Check-ins"],
             description: "Get check-ins history.",
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
-            }),
             response: {
                 200: z.object({
                     checkInsCount: z.number()
@@ -54,9 +50,6 @@ export async function checkInsRoutes(app: FastifyTypedInstance) {
             description: "Create a check-in.",
             params: z.object({
                 gymId: z.uuid()
-            }),
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
             }),
             body: z.object({
                 latitude: z.coerce.number().refine((value) => {
@@ -78,9 +71,6 @@ export async function checkInsRoutes(app: FastifyTypedInstance) {
             description: "Create a check-in.",
             params: z.object({
                 checkInId: z.uuid()
-            }),
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
             }),
             response: {
                 204: z.null().describe("Check-in validated.")

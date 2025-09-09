@@ -17,20 +17,19 @@ export async function gymsRoutes(app: FastifyTypedInstance) {
                 q: z.string(),
                 page: z.coerce.number().min(1).default(1)
             }),
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
-            }),
             response: {
-                200: z.array(
-                    z.object({
-                        id: z.uuid(),
-                        name: z.string(),
-                        description: z.string().optional(),
-                        phone: z.string().optional(),
-                        latitude: z.number(),
-                        longitue: z.number()
-                    })
-                )
+                200: z.object({
+                    gyms: z.array(
+                        z.object({
+                            id: z.uuid(),
+                            name: z.string(),
+                            description: z.string().nullable(),
+                            phone: z.string().nullable(),
+                            latitude: z.number(),
+                            longitude: z.number()
+                        })
+                    )
+                })
             }
         }
     }, search)
@@ -47,20 +46,19 @@ export async function gymsRoutes(app: FastifyTypedInstance) {
                     return Math.abs(value) <= 180
                 })
             }),
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
-            }),
             response: {
-                200: z.array(
-                    z.object({
-                        id: z.uuid(),
-                        name: z.string(),
-                        description: z.string().optional(),
-                        phone: z.string().optional(),
-                        latitude: z.number(),
-                        longitue: z.number()
-                    })
-                )
+                200: z.object({
+                    gyms: z.array(
+                        z.object({
+                            id: z.uuid(),
+                            name: z.string(),
+                            description: z.string().optional(),
+                            phone: z.string().optional(),
+                            latitude: z.number(),
+                            longitude: z.number()
+                        })
+                    )
+                })
             }
         }
     }, nearby)
@@ -80,9 +78,6 @@ export async function gymsRoutes(app: FastifyTypedInstance) {
                 longitude: z.number().refine((value) => {
                     return Math.abs(value) <= 180
                 })
-            }),
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
             }),
             response: {
                 201: z.null().describe("Gym created.")

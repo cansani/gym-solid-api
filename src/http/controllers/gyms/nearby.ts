@@ -22,6 +22,12 @@ export async function nearby(request: FastifyRequest, reply: FastifyReply) {
     })
 
     return reply.status(200).send({
-        gyms
+        gyms: gyms.map(item => {
+            return {
+                ...item,
+                latitude: Number(item.latitude),
+                longitude: Number(item.longitude)
+            }
+        })
     })
 }

@@ -32,7 +32,7 @@ export async function usersRoutes(app: FastifyTypedInstance) {
             }),
             response: {
                 200: z.object({
-                    accessToken: z.string()
+                    access_token: z.string()
                 })
             }
         }
@@ -42,12 +42,9 @@ export async function usersRoutes(app: FastifyTypedInstance) {
         schema: {
             tags: ["Auth"],
             description: "Refresh.",
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
-            }),
             response: {
                 200: z.object({
-                    accessToken: z.string()
+                    access_token: z.string()
                 })
             }
         }
@@ -59,13 +56,15 @@ export async function usersRoutes(app: FastifyTypedInstance) {
         schema: {
             tags: ["Users"],
             description: "Get user informations.",
-            headers: z.object({
-                Authorization: z.string().startsWith("Bearer ")
-            }),
             response: {
                 200: z.object({
-                    name: z.string(),
-                    email: z.email(),
+                    user: z.object({
+                        id: z.uuid(),
+                        name: z.string(),
+                        email: z.email(),
+                        role: z.string(),
+                        created_at: z.date()
+                    })
                 })
             }
         }
